@@ -13,22 +13,6 @@ namespace Agenda.WinForms
             InitializeComponent();
         }
 
-        private async void btnCargar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var contactos = await _apiCliente.ObtenerContactosAsync();
-                dgvContactos.DataSource = null;
-                dgvContactos.DataSource = contactos;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar contactos: {ex.Message}");
-            }
-            if (dgvContactos.Columns["Id"] != null)
-                dgvContactos.Columns["Id"].Visible = false;
-        }
-
         private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarNuevoContacto())
@@ -136,6 +120,8 @@ namespace Agenda.WinForms
             }
 
             var formEditar = new FormEditarContacto(contacto, _apiCliente);
+            // Suscribirse al evento
+            formEditar.ContactoActualizado += async (s, ev) => await CargarContactosAsync();
             var resultado = formEditar.ShowDialog();
 
             if (resultado == DialogResult.OK)
@@ -182,6 +168,11 @@ namespace Agenda.WinForms
 
             return true;
         }
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+            await CargarContactosAsync();
+
+        }
 
         private void txtNombre_Leave(object sender, EventArgs e)
         {
@@ -203,11 +194,6 @@ namespace Agenda.WinForms
 
         }
 
-        private async void Form1_Load(object sender, EventArgs e)
-        {
-            await CargarContactosAsync();
-
-        }
 
         private void txtApellido_Enter(object sender, EventArgs e)
         {

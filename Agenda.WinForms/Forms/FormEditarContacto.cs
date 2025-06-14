@@ -17,6 +17,8 @@ namespace Agenda.WinForms.Forms
         private readonly ContactoDTO _contacto;
         private readonly ApiCliente _apiCliente;
 
+        public event EventHandler ContactoActualizado;
+
         public FormEditarContacto(ContactoDTO contacto, ApiCliente apiCliente)
         {
             InitializeComponent();
@@ -44,7 +46,10 @@ namespace Agenda.WinForms.Forms
                 _contacto.Email = txtEmail.Text;
 
                 await _apiCliente.ActualizarContactoAsync(_contacto.Id, _contacto);
+                ContactoActualizado?.Invoke(this, EventArgs.Empty);
+
                 MessageBox.Show("Contacto actualizado con éxito.");
+                
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
