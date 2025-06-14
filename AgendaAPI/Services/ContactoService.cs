@@ -23,7 +23,16 @@ namespace AgendaAPI.Services
         }
         public IEnumerable<Contacto> ObtenerTodos()
         {
-            return _context.Contactos.ToList();
+            try
+            {
+                return _context.Contactos.ToList();
+            }
+            catch (Exception ex)
+            {
+                
+                throw new Exception("Error al obtener los contactos", ex);
+            }
+
         }
         public Contacto ObtenerPorId(int id)
         {

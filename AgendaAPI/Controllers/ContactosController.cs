@@ -2,6 +2,7 @@
 using AgendaAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AgendaAPI.Controllers
 {
@@ -30,6 +31,7 @@ namespace AgendaAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Contacto>> Get([FromQuery] string? nombre, [FromQuery] string? email)
         {
+            
             var contactos = _servicio.ObtenerTodos();
 
             if (!string.IsNullOrWhiteSpace(nombre))
