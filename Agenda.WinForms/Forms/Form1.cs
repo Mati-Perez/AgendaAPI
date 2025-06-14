@@ -1,6 +1,7 @@
 using Agenda.WinForms.DTOs;
 using Agenda.WinForms.Forms;
 using Agenda.WinForms.Servicios;
+using System.Windows.Forms;
 
 namespace Agenda.WinForms
 {
@@ -70,6 +71,7 @@ namespace Agenda.WinForms
 
             if (dgvContactos.Columns["Id"] != null)
                 dgvContactos.Columns["Id"].Visible = false;
+
         }
 
         private void LimpiarCampos()

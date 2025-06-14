@@ -16,14 +16,23 @@ namespace Agenda.WinForms.Servicios
         {
             _http = new HttpClient
             {
-                BaseAddress = new Uri("http://localhost:5000/api/")
-
+                // BaseAddress = new Uri("http://localhost:5000/api/")
+                BaseAddress = new Uri("https://agendaapi-production.up.railway.app/api/")
             };
         }
 
         public async Task<List<ContactoDTO>> ObtenerContactosAsync()
         {
-            return await _http.GetFromJsonAsync<List<ContactoDTO>>("contactos");
+            try
+            {
+                var contactos = await _http.GetFromJsonAsync<List<ContactoDTO>>("contactos");
+                return contactos ?? new List<ContactoDTO>();
+            }
+            catch (Exception ex)
+            {
+                return new List<ContactoDTO>();
+            }
+
         }
         public async Task CrearContactoAsync(ContactoDTO nuevo)
         {

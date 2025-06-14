@@ -1,6 +1,7 @@
 ﻿using AgendaAPI.Models;
 using AgendaAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaAPI.Controllers
 {
@@ -43,8 +44,15 @@ namespace AgendaAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Contacto nuevo)
         {
-            _servicio.Crear(nuevo);
-            return CreatedAtAction(nameof(Get), new { id = nuevo.Id }, nuevo);
+            try
+            {
+                _servicio.Crear(nuevo);
+                return CreatedAtAction(nameof(Get), new { id = nuevo.Id }, nuevo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error: {ex.Message}");
+            }
 
         }
 
