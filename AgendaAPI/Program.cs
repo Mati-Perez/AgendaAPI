@@ -30,6 +30,19 @@ var host = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Prod
 
 builder.WebHost.UseUrls($"http://{host}:{port}");
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy
+            .AllowAnyOrigin() // o más restrictivo si lo preferís
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+Console.WriteLine("Cadena de conexión: " + builder.Configuration.GetConnectionString("DefaultConnection"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,10 +52,16 @@ var app = builder.Build();
     app.UseSwaggerUI();
 }
 */
+app.UseCors();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
+
 
 app.UseAuthorization();
 
