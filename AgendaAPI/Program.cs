@@ -24,8 +24,12 @@ builder.Services.AddDbContext<AgendaDbContext>(options =>
     )
 );
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-        
+var host = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production"
+    ? "0.0.0.0"
+    : "localhost";
+
+builder.WebHost.UseUrls($"http://{host}:{port}");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

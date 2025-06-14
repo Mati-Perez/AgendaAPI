@@ -16,7 +16,8 @@ namespace Agenda.WinForms.Servicios
         {
             _http = new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7285/api/")
+                BaseAddress = new Uri("http://localhost:5000/api/")
+
             };
         }
 
